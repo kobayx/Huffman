@@ -32,18 +32,28 @@ private:
 template<typename Priority, typename Data>
 inline void Heap<Priority, Data>::sortDown(int a)
 {
-	if(heap[a*2].priority() > heap[a*2-1].priority()){ 
-		if((a-1).priority() > heap[(a*2)-1].priority()){
-			swap(heap[a-1],heap[(a*2)-1]);
-			sortDown(a*2);
-			return;
+	// a*2 is right child, a*2-1 is left child
+	if(heap[a*2] && heap[a*2-1])
+	{
+		if(heap[a*2].priority() > heap[a*2-1].priority())
+		{
+			if(heap[(a-1)].priority() > heap[(a*2)-1].priority())
+			{
+				swap(heap[a-1],heap[(a*2)-1]);
+				sortDown(a*2);
+				return;
+			}
+		} else if(heap[a-1].priority() > heap[a*2].priority())
+		{
+				swap(heap[a-1],heap[a*2]);
+				sortDown(a*2+1);
+				return;
 		}
-	} else {
-		if(heap[a-1].priority() > heap[a*2].priority()){
-			swap(heap[a-1],heap[a*2]);
-			sortDown(a*2+1);
-			return;
-		}
+	}
+	if(!heap[a*2-1] && heap[a*2-1].priority() < heap[a-1].priority()){
+		swap(heap[a-1],heap[(a*2)-1]);
+		sortDown(a*2);
+		return;
 	}
 	return;
 }
@@ -51,6 +61,12 @@ inline void Heap<Priority, Data>::sortDown(int a)
 template<typename Priority, typename Data>
 inline void Heap<Priority, Data>::sortUp(int a)
 {
+	if(heap[(a-1)/2])
+		return;
+	if(heap[(a-1)/2].priority() > heap[a-1].priority()){
+		swap(heap[(a-1)/2], heap[a-1]);
+		sortUp((a-1)/2);
+	}
 	return;
 }
 
@@ -60,6 +76,7 @@ inline void Heap<Priority, Data>::push(Priority priority, Data data)
 {
 	item itm(priority, data);
 	heap.push_back(itm);
+	sortUp(1);
 }
 
 
