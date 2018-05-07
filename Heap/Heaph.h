@@ -31,7 +31,6 @@ private:
 template<typename Priority, typename Data>
 inline void Heap<Priority, Data>::push(Priority priority, Data data)
 {
-	item im(priority, data);
 	item itm(priority, data);
 	heap.push_back(itm);
 }
