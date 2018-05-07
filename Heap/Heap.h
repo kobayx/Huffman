@@ -16,7 +16,9 @@ public:
 		Data data_;
 		Priority priority_;
 	};
-
+	
+	void sortDown(int a);
+	void sortUp(int a);
 	void push(Priority priority, Data data);
 	item& pop();
 	bool is_empty();
@@ -25,7 +27,32 @@ private:
 };
 
 
-#endif
+
+
+template<typename Priority, typename Data>
+inline void Heap<Priority, Data>::sortDown(int a)
+{
+	if(heap[a*2].priority() > heap[a*2-1].priority()){ 
+		if((a-1).priority() > heap[(a*2)-1].priority()){
+			swap(heap[a-1],heap[(a*2)-1]);
+			sortDown(a*2);
+			return;
+		}
+	} else {
+		if(heap[a-1].priority() > heap[a*2].priority()){
+			swap(heap[a-1],heap[a*2]);
+			sortDown(a*2+1);
+			return;
+		}
+	}
+	return;
+}
+
+template<typename Priority, typename Data>
+inline void Heap<Priority, Data>::sortUp(int a)
+{
+	return;
+}
 
 // Add sorting
 template<typename Priority, typename Data>
@@ -35,7 +62,7 @@ inline void Heap<Priority, Data>::push(Priority priority, Data data)
 	heap.push_back(itm);
 }
 
-// Add sorting
+
 template<typename Priority, typename Data>
 inline typename Heap<Priority, Data>::item& Heap<Priority, Data>::pop()
 {
@@ -43,6 +70,7 @@ inline typename Heap<Priority, Data>::item& Heap<Priority, Data>::pop()
 		item temp = heap.front();
 		heap.front() = heap.back();
 		heap.pop_back();
+		sortDown(1);
 		return temp;
 	}
 	std::cerr << "No items in heap" << std::endl;
@@ -55,3 +83,7 @@ inline bool Heap<Priority, Data>::is_empty()
 		return true;
 	return false;
 }
+
+
+
+#endif
