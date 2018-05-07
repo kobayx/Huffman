@@ -27,13 +27,16 @@ private:
 
 #endif
 
+// Add sorting
 template<typename Priority, typename Data>
 inline void Heap<Priority, Data>::push(Priority priority, Data data)
 {
+	item im(priority, data);
 	item itm(priority, data);
 	heap.push_back(itm);
 }
 
+// Add sorting
 template<typename Priority, typename Data>
 inline typename Heap<Priority, Data>::item& Heap<Priority, Data>::pop()
 {
